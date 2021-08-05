@@ -1,0 +1,24 @@
+name: "Upload Android App to Google Play Console"
+description: "A github action to upload android app to google play console."
+inputs:
+  service-account:
+    description: "Service account file created from Google Cloud Console"
+    required: true
+  release-file:
+    description: "Bundle or APK file to release"
+    required: true
+  packange-name:
+    description: "Android app package name or applicationId"
+    required: true
+  track:
+    description: "'production', 'alpha', 'beta', 'internal'"
+    required: true
+  mapping-file:
+    description: ""
+    required: false
+  whatsnew-directory:
+    description: "Directory for release note with multi-language supported. (BCP-47 language tag)"
+    required: false
+runs:
+  using: "node12"
+  main: "dist/index.js"
