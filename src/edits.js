@@ -8,7 +8,9 @@ const insert = async (payload) => {
   try {
     core.info("Creating a new edit for this release...");
 
-    return (await androidpublisher.edits.insert(payload)).data;
+    const res = await androidpublisher.edits.insert(payload);
+    core.info("insert successfully");
+    return res.data;
   } catch (error) {
     core.error("insert error");
     core.setFailed(error);

@@ -16,19 +16,19 @@ async function uploadToGooglePlay(payload, releaseFile, configuration) {
   const { track, mappingFile, whatsnewDir } = configuration;
 
   const { id } = await edits.insert(payload);
-  const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
+  // const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
 
-  await bundles.uploadMappingFile(
-    { ...payload, editId: id },
-    { versionCode: bundle.versionCode, mappingFile }
-  );
+  // await bundles.uploadMappingFile(
+  //   { ...payload, editId: id },
+  //   { versionCode: bundle.versionCode, mappingFile }
+  // );
 
-  await tracks.update(
-    { ...payload, editId: id },
-    { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
-  );
+  // await tracks.update(
+  //   { ...payload, editId: id },
+  //   { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
+  // );
 
-  await edits.commit({ ...payload, editId: id });
+  // await edits.commit({ ...payload, editId: id });
 }
 
 async function execute() {
@@ -63,7 +63,6 @@ async function execute() {
     }
 
     core.info(`Your service account file ${serviceAccount}`);
-    core.info(fs.readFileSync(serviceAccount, "utf-8"));
 
     core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccount);
 
@@ -77,5 +76,4 @@ async function execute() {
     core.setFailed(error.message);
   }
 }
-
 execute();
