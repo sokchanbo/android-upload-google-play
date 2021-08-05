@@ -30,6 +30,7 @@ const upload = async (payload, releaseFile) => {
 
     return res.data;
   } catch (error) {
+    core.error('error uploading bundle')
     core.setFailed(error);
   }
 };

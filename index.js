@@ -16,7 +16,7 @@ async function uploadToGooglePlay(payload, releaseFile, configuration) {
   const { track, mappingFile, whatsnewDir } = configuration;
 
   const { id } = await edits.insert(payload);
-  // const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
+  const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
 
   // await bundles.uploadMappingFile(
   //   { ...payload, editId: id },
