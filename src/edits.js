@@ -10,6 +10,7 @@ const insert = async (payload) => {
 
     return (await androidpublisher.edits.insert(payload)).data;
   } catch (error) {
+    core.error("insert error");
     core.setFailed(error);
   }
 };

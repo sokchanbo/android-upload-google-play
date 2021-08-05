@@ -63,7 +63,7 @@ async function execute() {
     }
 
     core.info(`Your service account file ${serviceAccount}`);
-    core.info(serviceAccount);
+    core.info(fs.readFileSync(serviceAccount, "utf-8"));
 
     core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccount);
 
