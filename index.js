@@ -62,18 +62,10 @@ async function execute() {
       core.setFailed("You must provide track in your configuration.");
     }
 
-    const serviceAccountFile = "./service-account.json";
+    core.info(`Your service account file ${serviceAccount}`);
+    core.info(serviceAccount);
 
-    core.info(`Decoding service account file ${serviceAccount}`);
-
-    let buff = Buffer.from(serviceAccount, "base64");
-    let rawJson = buff.toString("ascii");
-
-    fs.writeFileSync(serviceAccountFile, rawJson, {
-      encoding: "utf8",
-    });
-
-    core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccountFile);
+    core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccount);
 
     const file = await fg(releaseFile);
     await uploadToGooglePlay({ auth, packageName }, file, {
