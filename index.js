@@ -73,3 +73,5 @@ async function execute() {
     core.setFailed(error.message);
   }
 }
+
+execute();
