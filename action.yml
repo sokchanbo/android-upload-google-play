@@ -7,7 +7,7 @@ inputs:
   release-file:
     description: "Bundle or APK file to release"
     required: true
-  packange-name:
+  package-name:
     description: "Android app package name or applicationId"
     required: true
   track:
