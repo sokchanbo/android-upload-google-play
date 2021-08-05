@@ -18,17 +18,17 @@ async function uploadToGooglePlay(payload, releaseFile, configuration) {
   const { id } = await edits.insert(payload);
   const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
 
-  // await bundles.uploadMappingFile(
-  //   { ...payload, editId: id },
-  //   { versionCode: bundle.versionCode, mappingFile }
-  // );
+  await bundles.uploadMappingFile(
+    { ...payload, editId: id },
+    { versionCode: bundle.versionCode, mappingFile }
+  );
 
-  // await tracks.update(
-  //   { ...payload, editId: id },
-  //   { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
-  // );
+  await tracks.update(
+    { ...payload, editId: id },
+    { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
+  );
 
-  // await edits.commit({ ...payload, editId: id });
+  await edits.commit({ ...payload, editId: id });
 }
 
 async function execute() {
@@ -66,8 +66,8 @@ async function execute() {
 
     core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccount);
 
-    const file = await fg(releaseFile);
-    await uploadToGooglePlay({ auth, packageName }, file, {
+    const files = await fg(releaseFile);
+    await uploadToGooglePlay({ auth, packageName }, files[0], {
       track,
       mappingFile,
       whatsnewDir,

@@ -6,14 +6,15 @@ const androidpublisher = google.androidpublisher("v3");
 const fs = require("fs");
 
 const upload = async (payload, releaseFile) => {
-  const { auth, packageName, editId } = payload;
-
-  const bundleFile = fs.createReadStream(releaseFile);
-
-  core.info(`Your release file ${releaseFile}`);
-  core.info("Uploading your bundle file...");
-
   try {
+    const { auth, packageName, editId } = payload;
+
+    core.info(`Your release file ${releaseFile}`);
+
+    const bundleFile = fs.createReadStream(releaseFile);
+
+    core.info("Uploading your bundle file...");
+
     const res = await androidpublisher.edits.bundles.upload({
       auth,
       packageName,
@@ -30,7 +31,7 @@ const upload = async (payload, releaseFile) => {
 
     return res.data;
   } catch (error) {
-    core.error('error uploading bundle')
+    core.error("error uploading bundle");
     core.setFailed(error);
   }
 };
