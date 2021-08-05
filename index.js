@@ -2,6 +2,7 @@ const core = require("@actions/core");
 const { google } = require("googleapis");
 
 const fg = require("fast-glob");
+const fs = require("fs");
 
 const edits = require("./src/edits");
 const bundles = require("./src/bundles");
@@ -61,7 +62,18 @@ async function execute() {
       core.setFailed("You must provide track in your configuration.");
     }
 
-    core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccount);
+    const serviceAccountFile = "./service-account.json";
+
+    core.info("Decoding service account file...");
+
+    let buff = Buffer.from(serviceAccount, "base64");
+    let rawJson = buff.toString("ascii");
+
+    fs.writeFileSync(serviceAccountFile, rawJson, {
+      encoding: "utf8",
+    });
+
+    core.exportVariable("GOOGLE_APPLICATION_CREDENTIALS", serviceAccountFile);
 
     const file = await fg(releaseFile);
     await uploadToGooglePlay({ auth, packageName }, file, {
