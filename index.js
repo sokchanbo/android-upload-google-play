@@ -13,22 +13,29 @@ const auth = new google.auth.GoogleAuth({
 });
 
 async function uploadToGooglePlay(payload, releaseFile, configuration) {
-  const { track, mappingFile, whatsnewDir } = configuration;
+  try {
+    const { track, mappingFile, whatsnewDir } = configuration;
 
-  const { id } = await edits.insert(payload);
-  const bundle = await bundles.upload({ ...payload, editId: id }, releaseFile);
+    const { id } = await edits.insert(payload);
+    const bundle = await bundles.upload(
+      { ...payload, editId: id },
+      releaseFile
+    );
 
-  await bundles.uploadMappingFile(
-    { ...payload, editId: id },
-    { versionCode: bundle.versionCode, mappingFile }
-  );
+    await bundles.uploadMappingFile(
+      { ...payload, editId: id },
+      { versionCode: bundle.versionCode, mappingFile }
+    );
 
-  await tracks.update(
-    { ...payload, editId: id },
-    { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
-  );
+    await tracks.update(
+      { ...payload, editId: id },
+      { track, versionCode: bundle.versionCode, status: "draft", whatsnewDir }
+    );
 
-  await edits.commit({ ...payload, editId: id });
+    await edits.commit({ ...payload, editId: id });
+  } catch (error) {
+    core.setFailed(error);
+  }
 }
 
 async function execute() {

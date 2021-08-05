@@ -26,7 +26,7 @@ const upload = async (payload, releaseFile) => {
     });
 
     core.info(
-      `Successfully upload versionCode ${res.data.versionCode} bundle file.`
+      `Successfully upload versionCode '${res.data.versionCode}' bundle file.`
     );
 
     return res.data;
@@ -40,21 +40,24 @@ const uploadMappingFile = async (payload, params) => {
   try {
     const { auth, packageName, editId } = payload;
     const { versionCode, mappingFile } = params;
-    const mapping = fs.readFileSync(mappingFile, "utf-8");
 
-    if (mapping) {
-      core.info("Uploading mapping file...");
-      return await androidpublisher.edits.deobfuscationfiles.upload({
-        auth,
-        packageName,
-        editId,
-        apkVersionCode: versionCode,
-        deobfuscationFileType: "proguard",
-        media: {
-          mimeType: "application/octet-stream",
-          body: fs.createReadStream(mappingFile),
-        },
-      });
+    if (mappingFile) {
+      const mapping = fs.readFileSync(mappingFile, "utf-8");
+
+      if (mapping) {
+        core.info("Uploading mapping file...");
+        return await androidpublisher.edits.deobfuscationfiles.upload({
+          auth,
+          packageName,
+          editId,
+          apkVersionCode: versionCode,
+          deobfuscationFileType: "proguard",
+          media: {
+            mimeType: "application/octet-stream",
+            body: fs.createReadStream(mappingFile),
+          },
+        });
+      }
     }
   } catch (error) {
     core.setFailed(error);
