@@ -64,8 +64,7 @@ async function execute() {
 
     const serviceAccountFile = "./service-account.json";
 
-    core.info("Decoding service account file...");
-    core.debug(serviceAccount)
+    core.info(`Decoding service account file ${serviceAccount}`);
 
     let buff = Buffer.from(serviceAccount, "base64");
     let rawJson = buff.toString("ascii");
