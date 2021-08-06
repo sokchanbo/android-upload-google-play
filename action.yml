@@ -1,7 +1,8 @@
 name: "Upload Android App to Google Play Console"
 description: "A github action to upload android app to google play console."
-icon: "arrow-up-left"
-color: "green"
+branding:
+  icon: "arrow-up-left"
+  color: "green"
 inputs:
   service-account:
     description: "Service account file created from Google Cloud Console"
